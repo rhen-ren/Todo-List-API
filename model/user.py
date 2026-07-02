@@ -2,7 +2,7 @@ from sqlalchemy.orm import Mapped
 from sqlalchemy.orm import mapped_column
 from sqlalchemy.orm import relationship
 from sqlalchemy import String
-from note import Note
+from model.note import Note
 from db import Base
 
 class User(Base):
@@ -12,4 +12,4 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(200), nullable=False)
     password: Mapped[str] = mapped_column(String(200), nullable=False)
 
-    note: Mapped["Note"] = relationship("Note", back_populates="users")
+    notes: Mapped["Note"] = relationship("Note", back_populates="user")
