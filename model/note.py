@@ -14,4 +14,4 @@ class Note(Base):
     title: Mapped[str] = mapped_column(String(100), nullable = False)
     description: Mapped[str] = mapped_column(String(300), nullable = True)
 
-    users = Mapped[list["User"]] = relationship("User", back_populates = "note")
+    user: Mapped[list["User"]] = relationship("User", back_populates = "notes")
