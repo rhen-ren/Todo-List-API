@@ -74,12 +74,6 @@ def delete_todo_item(todo: CreateToDo, id: int, token: str, db: Session):
         if current_todo.user_id == current_user.id:
             db.delete(current_todo)
             db.commit()
-            db.refresh(current_todo)
-            return GetToDo(
-                id=current_todo.id,
-                title=current_todo.title,
-                description=current_todo.description
-            )
         else:
             raise HTTPException(status_code=401, detail= {"message" : "Unauthorized"})
     except:
