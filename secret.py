@@ -1,0 +1,2 @@
+import secrets
+secret_key = "FRCXNZjGRkaiu0XLn6TrOZzscWrafnOtKKAaVpqM0m0"
