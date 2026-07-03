@@ -20,7 +20,7 @@ def get_todos(page: int, limit: int, token: str, db: Session):
             )
             return paginatedTodos
         else:
-            return {"message": "unauthorized"}
+            raise HTTPException(status_code=401, detail= {"message" : "Unauthorized"})
     except:
         raise HTTPException(status_code=404)
 
@@ -43,7 +43,7 @@ def create_todo_item(todo: CreateToDo, token: str, db: Session):
                 description=newItem.description
             )
         else:
-            return {"message" : "unauthorized"}
+            raise HTTPException(status_code=401, detail= {"message" : "Unauthorized"})
     except:
         raise HTTPException(status_code=401)
     
@@ -63,7 +63,7 @@ def update_todo_item(todo: CreateToDo, id: int, token: str, db: Session):
                 description=current_todo.description
             )
         else:
-            return {"message" : "forbidden"}
+            raise HTTPException(status_code=401, detail= {"message" : "Forbidden"})
     except:
         raise HTTPException(status_code=401)
 
@@ -81,7 +81,7 @@ def delete_todo_item(todo: CreateToDo, id: int, token: str, db: Session):
                 description=current_todo.description
             )
         else:
-            return {"message" : "forbidden"}
+            raise HTTPException(status_code=401, detail= {"message" : "Unauthorized"})
     except:
         raise HTTPException(status_code=401)
 
