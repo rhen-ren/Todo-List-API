@@ -1,5 +1,5 @@
 from typing import Annotated
-from fastapi import APIRouter, Depends, Header
+from fastapi import APIRouter, Depends, Header, Query
 from sqlalchemy.orm import Session
 from schema.user import CreateUser, LoginUser
 from schema.todo import CreateToDo
@@ -29,4 +29,8 @@ def create_todo_item(todo: CreateToDo, token: str = Depends(oauth2_scheme), db: 
 @router.put("/todos/{id}")
 def update_todo_item(todo: CreateToDo, id: int = id, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     return todoservice.update_todo_item(todo, id, token, db)
+
+@router.get("/todos/")
+def get_todos(page: int = Query(ge=1), limit: int = Query(ge=1), db: Session = Depends(get_db)):
+    return todoservice.get_todos(page, limit, db)
 
