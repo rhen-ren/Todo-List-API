@@ -26,3 +26,7 @@ def user_login(user: OAuth2PasswordRequestForm = Depends(), db: Session = Depend
 def create_todo_item(todo: CreateToDo, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
     return todoservice.create_todo_item(todo, token, db)
 
+@router.put("/todos/{id}")
+def update_todo_item(todo: CreateToDo, id: int = id, token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    return todoservice.update_todo_item(todo, id, token, db)
+
