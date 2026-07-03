@@ -9,12 +9,11 @@ from fastapi.security import OAuth2PasswordBearer
 from pwdlib import PasswordHash
 from sqlalchemy.orm import Session
 from sqlalchemy import select
+from dependency import oauth2_scheme
+from secret import secret_key
 
 SECRET_KEY = secret_key
 ALGORITHM = "HS256"
-
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/login")
-
 password_hash = PasswordHash.recommended()
 def authenticate_user(email: str, password: str, db: Session):
     user = db.execute(select(User).where(User.email == email)).scalars().one_or_none()
@@ -34,16 +33,16 @@ def create_access_token(data: dict, expires_delta: timedelta | None):
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm = ALGORITHM)
     return encoded_jwt
 
-def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db: Session):
+def get_current_user(token: str, db: Session):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         email = payload.get("email")
         if email is None:
-            pass
+            return None
         token_data = TokenData(email = email)
         user = db.execute(select(User).where(User.email == token_data.email)).scalars().one_or_none()
         if not user:
-            pass
+            return None
         return user
-    except:
-        pass
+    except Exception as e:
+        raise e
