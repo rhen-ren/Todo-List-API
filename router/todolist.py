@@ -31,6 +31,6 @@ def update_todo_item(todo: CreateToDo, id: int = id, token: str = Depends(oauth2
     return todoservice.update_todo_item(todo, id, token, db)
 
 @router.get("/todos/")
-def get_todos(page: int = Query(ge=1), limit: int = Query(ge=1), db: Session = Depends(get_db)):
-    return todoservice.get_todos(page, limit, db)
+def get_todos(page: int = Query(ge=1), limit: int = Query(ge=1), token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    return todoservice.get_todos(page, limit, token, db)
 
