@@ -6,16 +6,23 @@ from model.todo import Todo
 from fastapi.exceptions import HTTPException
 from fastapi.responses import JSONResponse
 
-def get_todos(page: int, limit: int, db: Session):
-    todos = db.execute(select(Todo).offset((page - 1)*limit).limit(limit)).scalars().all()
-    total = len(todos)
-    paginatedTodos = GetToDoPaginated(
-        data=[todo for todo in todos],
-        page=page,
-        limit=limit,
-        total=total
-    )
-    return paginatedTodos
+def get_todos(page: int, limit: int, token: str, db: Session):
+    try:
+        current_user = get_current_user(token, db)
+        if current_user:
+            todos = db.execute(select(Todo).offset((page - 1)*limit).limit(limit)).scalars().all()
+            total = len(todos)
+            paginatedTodos = GetToDoPaginated(
+                data=[todo for todo in todos],
+                page=page,
+                limit=limit,
+                total=total
+            )
+            return paginatedTodos
+        else:
+            return {"message": "unauthorized"}
+    except:
+        raise HTTPException(status_code=404)
 
 def create_todo_item(todo: CreateToDo, token: str, db: Session):
     try:
