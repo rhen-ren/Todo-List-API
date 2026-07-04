@@ -12,4 +12,4 @@ class User(Base):
     email: Mapped[str] = mapped_column(String(200), nullable=False, unique=True)
     password: Mapped[str] = mapped_column(String(200), nullable=False)
 
-    todos: Mapped["Todo"] = relationship("Todo", back_populates="user")
+    todos: Mapped[list["Todo"]] = relationship("Todo", back_populates="user")

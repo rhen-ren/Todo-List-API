@@ -14,4 +14,4 @@ class Todo(Base):
     title: Mapped[str] = mapped_column(String(100), nullable = False)
     description: Mapped[str] = mapped_column(String(300), nullable = True)
 
-    user: Mapped[list["User"]] = relationship("User", back_populates = "todos")
+    user: Mapped["User"] = relationship("User", back_populates = "todos")
